@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row">
+
+<!-- Left Side Small Images -->
+<div class="col-md-1">
+
+<div style="position:sticky; top:100px;">
+
+{% for img in product.images.all %}
+
+<img src="{{ img.image.url }}"
+class="thumb border mb-3 p-1 rounded"
+width="80"
+style="cursor:pointer;">
+
+{% endfor %}
+
+</div>
+
+</div>
+
+
+<!-- Main Hero Image -->
+<div class="col-md-5">
+
+<div style="position:sticky; top:100px;">
+
+{% if product.images.first %}
+<img id="mainImage"
+src="{{ product.images.first.image.url }}"
+class="img-fluid border rounded p-2">
+{% else %}
+<img id="mainImage"
+src="{{ product.image.url }}"
+class="img-fluid border rounded p-2">
+{% endif %}
+
+</div>
+
+</div>
+
+
+<!-- Product Details -->
+<div class="col-md-4">
+
+<h3 class="fw-bold">
+{{ product.name }}
+</h3>
+
+<!-- Dynamic Star Rating -->
+
+<div class="mb-2 text-warning">
+
+{% if product.rating >= 1 %}⭐{% endif %}
+{% if product.rating >= 2 %}⭐{% endif %}
+{% if product.rating >= 3 %}⭐{% endif %}
+{% if product.rating >= 4 %}⭐{% endif %}
+{% if product.rating >= 5 %}⭐{% endif %}
+
+({{ product.rating }})
+
+</div>
+
+<h2 class="text-success mt-2">
+₹{{ product.price }}
+</h2>
+
+<hr>
+
+<p>
+<b>Brand:</b>
+{{ product.brand }}
+</p>
+
+<p>
+<b>Category:</b>
+{{ product.category }}
+</p>
+
+<p>
+<b>Stock:</b>
+
+{% if product.stock > 0 %}
+
+<span class="text-success">
+
+{{ product.stock }} Available ✅
+
+</span>
+
+{% else %}
+
+<span class="text-danger">
+
+Out of Stock ❌
+
+</span>
+
+{% endif %}
+
+</p>
+
+<hr>
+
+<h5>Description</h5>
+
+<h5 class="fw-bold mt-4">
+About this item
+</h5>
+
+<div class="border rounded p-3 bg-light">
+
+{{ product.description|linebreaks }}
+
+</div>
+
+</div>
+
+
+<!-- Right Side Buy Box -->
+<div class="col-md-2">
+
+<div class="border rounded shadow p-3">
+
+<h4 class="text-success">
+₹{{ product.price }}
+</h4>
+
+<p class="text-success">
+FREE Delivery
+</p>
+
+<p>
+
+{% if product.stock > 0 %}
+
+In Stock ✅
+
+{% else %}
+
+Out Of Stock ❌
+
+{% endif %}
+
+</p>
+
+<a href="{% url 'add_to_cart' product.id %}"
+class="btn btn-warning w-100 mb-2">
+
+Add to Cart
+
+</a>
+
+<a href="{% url 'checkout' product.id %}"
+class="btn btn-dark w-100">
+
+Buy Now
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const images=document.querySelectorAll(".thumb");
+
+images.forEach(img=>{
+
+img.addEventListener("click",function(){
+
+document.getElementById("mainImage").src=this.src;
+
+});
+
+});
+
+</script>
+
+{% endblock %}
